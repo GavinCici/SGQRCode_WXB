@@ -160,6 +160,12 @@
 - (AVCaptureDevice *)device {
     if (!_device) {
         _device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if ([_device isAutoFocusRangeRestrictionSupported])
+        {
+            [_device lockForConfiguration:nil];
+            _device.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+            [_device unlockForConfiguration];
+        }
     }
     return _device;
 }
@@ -199,19 +205,7 @@
 - (NSArray *)metadataObjectTypes {
     if (!_metadataObjectTypes) {
         _metadataObjectTypes = @[
-            AVMetadataObjectTypeUPCECode,
-            AVMetadataObjectTypeCode39Code,
-            AVMetadataObjectTypeCode39Mod43Code,
-            AVMetadataObjectTypeEAN13Code,
-            AVMetadataObjectTypeEAN8Code,
-            AVMetadataObjectTypeCode93Code,
-            AVMetadataObjectTypeCode128Code,
-            AVMetadataObjectTypePDF417Code,
             AVMetadataObjectTypeQRCode,
-            AVMetadataObjectTypeAztecCode,
-            AVMetadataObjectTypeInterleaved2of5Code,
-            AVMetadataObjectTypeITF14Code,
-            AVMetadataObjectTypeDataMatrixCode,
         ];
     }
     return _metadataObjectTypes;
