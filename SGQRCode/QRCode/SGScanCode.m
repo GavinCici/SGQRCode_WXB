@@ -268,6 +268,16 @@
             [self.sampleBufferDelegate scanCode:self brightness:brightnessValue];
         }
     });
+  CGFloat  currentZoomFactor = self.device.videoZoomFactor;
+    if (currentZoomFactor < 2) {
+        NSError *error = nil;
+        if ([self.device lockForConfiguration:&error]) {
+            [self.device rampToVideoZoomFactor:currentZoomFactor+1 withRate:2];
+            [self.device unlockForConfiguration];
+        } else {
+            // 处理错误
+        }
+    }
 }
 
 
